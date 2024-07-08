@@ -42,7 +42,12 @@ export default async function Home() {
                     <Text fontWeight={"bold"}>{user.name}</Text>
                     <Text>{user.email}</Text>
                   </VStack>
-                  <DeleteUserButton userId={user.id} />
+                  <VStack>
+                    <DeleteUserButton userId={user.id} />
+                    <Link href={"/update-user/" + user.id}>
+                      <Button size="sm">Editar</Button>
+                    </Link>
+                  </VStack>
                 </HStack>
               </CardBody>
             </Card>
