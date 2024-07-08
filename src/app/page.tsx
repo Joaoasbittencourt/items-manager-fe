@@ -9,7 +9,8 @@ import {
   CardBody,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { getUsers } from "./actions";
+import { getUsers } from "../actions/users";
+import { DeleteUserButton } from "../components/delete-user-button";
 
 export default async function Home() {
   const users = await getUsers();
@@ -18,7 +19,7 @@ export default async function Home() {
     <main>
       <Container pt={10}>
         <VStack align={"flex-start"} w="100%" spacing={4}>
-          <HStack w="100%" justify={"space-between"}>
+          <HStack w="100%" justify={"space-between"} align={"center"} mb={4}>
             <Heading>Usuários</Heading>
             <Link href="/create-user">
               <Button size="sm">Criar usuário</Button>
@@ -26,15 +27,23 @@ export default async function Home() {
           </HStack>
           {isEmpty && (
             <VStack w="100%">
-              <Text>Nenhum usuário encontrado.</Text>
-              <Button colorScheme="blue">Criar primeiro usuário </Button>
+              <Card variant={"filled"} w="100%">
+                <CardBody>
+                  <Text>Nenhum usuário encontrado.</Text>
+                </CardBody>
+              </Card>
             </VStack>
           )}
           {users.map((user) => (
             <Card variant="filled" w="100%" key={user.id}>
               <CardBody>
-                <Text>{user.name}</Text>
-                <Text>{user.email}</Text>
+                <HStack justify="space-between">
+                  <VStack align={"flex-start"}>
+                    <Text fontWeight={"bold"}>{user.name}</Text>
+                    <Text>{user.email}</Text>
+                  </VStack>
+                  <DeleteUserButton userId={user.id} />
+                </HStack>
               </CardBody>
             </Card>
           ))}

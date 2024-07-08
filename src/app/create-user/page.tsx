@@ -8,25 +8,28 @@ import {
   Container,
   FormControl,
   FormLabel,
+  HStack,
   Heading,
   Input,
   VStack,
 } from "@chakra-ui/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useFormState, useFormStatus } from "react-dom";
 import { useEffect } from "react";
-import { createUser } from "./actions";
+import { createUser } from "../../actions/users";
 
 const CreateUserPage = () => {
   const [state, formAction] = useFormState(createUser, {
     status: "initial",
   });
 
+  const router = useRouter();
+
   useEffect(() => {
     if (state.status === "success") {
-      redirect("/");
+      router.replace("/");
     }
-  }, [state.status]);
+  }, [state.status, router]);
 
   return (
     <Container pt={10}>
@@ -46,7 +49,16 @@ const CreateUserPage = () => {
               placeholder="johndoe@mail.com"
             />
           </FormControl>
-          <SubmitButton />
+          <HStack w="100%" mt={2}>
+            <SubmitButton />
+            <Button
+              onClick={() => router.push("/")}
+              variant={"ghost"}
+              colorScheme="red"
+            >
+              Cancelar
+            </Button>
+          </HStack>
           {state.status === "error" && (
             <Alert status="error">
               <AlertIcon />
@@ -63,7 +75,7 @@ const CreateUserPage = () => {
 const SubmitButton = () => {
   const { pending } = useFormStatus();
   return (
-    <Button w="100%" isLoading={pending} colorScheme="blue" type="submit">
+    <Button isLoading={pending} type="submit">
       Criar
     </Button>
   );
