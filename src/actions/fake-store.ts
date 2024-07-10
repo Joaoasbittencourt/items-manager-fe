@@ -44,7 +44,6 @@ export const importUser = async (
   }
 
   const fakeStoreUser = (await response.json()) as FakeStoreUser;
-  console.log(fakeStoreUser);
   const createUserRes = await createUser({
     name: fakeStoreUser.name.firstname + " " + fakeStoreUser.name.lastname,
     email: fakeStoreUser.email,
