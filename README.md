@@ -1,4 +1,4 @@
-# Users-Manager
+# users-manager
 
 Aplicação para gerenciamento de usuários.
 
