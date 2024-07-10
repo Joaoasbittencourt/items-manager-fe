@@ -21,9 +21,14 @@ export default async function Home() {
         <VStack align={"flex-start"} w="100%" spacing={4}>
           <HStack w="100%" justify={"space-between"} align={"center"} mb={4}>
             <Heading>Usuários</Heading>
-            <Link href="/create-user">
-              <Button size="sm">Criar usuário</Button>
-            </Link>
+            <HStack>
+              <Link href="/create-user">
+                <Button size="sm">Criar usuário</Button>
+              </Link>
+              <Link href={"/import-user/"}>
+                <Button size="sm">Importar</Button>
+              </Link>
+            </HStack>
           </HStack>
           {isEmpty && (
             <VStack w="100%">

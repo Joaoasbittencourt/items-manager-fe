@@ -7,6 +7,7 @@ import {
   Button,
   Container,
   FormControl,
+  FormHelperText,
   FormLabel,
   HStack,
   Heading,
@@ -16,14 +17,13 @@ import {
 import { useRouter } from "next/navigation";
 import { useFormState, useFormStatus } from "react-dom";
 import { useEffect } from "react";
-import { createUserFormAction } from "../../actions/users";
+import { importUser } from "../../actions/fake-store";
 
-const CreateUserPage = () => {
-  const [state, formAction] = useFormState(createUserFormAction, {
+const ImportUserPage = ({ params: {} }) => {
+  const router = useRouter();
+  const [state, formAction] = useFormState(importUser, {
     status: "initial",
   });
-
-  const router = useRouter();
 
   useEffect(() => {
     if (state.status === "success") {
@@ -41,20 +41,17 @@ const CreateUserPage = () => {
       borderRadius={"md"}
     >
       <VStack align="flex-start" spacing={4}>
-        <Heading size={"lg"}>Novo Usuário</Heading>
+        <Heading size={"lg"}>Importar Usuário da Fake Store</Heading>
         <VStack as="form" w={"100%"} action={formAction}>
           <FormControl>
-            <FormLabel>Nome</FormLabel>
-            <Input name="name" type="text" required placeholder="John Doe" />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Email</FormLabel>
+            <FormLabel>Nome de usuário</FormLabel>
             <Input
-              name="email"
-              type="email"
+              name="username"
+              type="text"
               required
-              placeholder="johndoe@mail.com"
+              placeholder="John Doe"
             />
+            <FormHelperText>Usuário da FakeStore API</FormHelperText>
           </FormControl>
           <HStack w="100%" mt={4}>
             <SubmitButton />
@@ -67,10 +64,14 @@ const CreateUserPage = () => {
             </Button>
           </HStack>
           {state.status === "error" && (
-            <Alert status="error">
+            <Alert borderRadius={"md"} status="error">
               <AlertIcon />
-              There was an error processing your request
-              <AlertDescription maxWidth="sm">{state.message}</AlertDescription>
+              <VStack>
+                Um error ocorreu ao importar o usuário.
+                <AlertDescription maxWidth="sm">
+                  {state.message}
+                </AlertDescription>
+              </VStack>
             </Alert>
           )}
         </VStack>
@@ -83,9 +84,9 @@ const SubmitButton = () => {
   const { pending } = useFormStatus();
   return (
     <Button isLoading={pending} type="submit">
-      Criar
+      Importar
     </Button>
   );
 };
 
-export default CreateUserPage;
+export default ImportUserPage;

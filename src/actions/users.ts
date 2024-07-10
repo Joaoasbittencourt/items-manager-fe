@@ -25,24 +25,32 @@ export const deleteUser = async (userId: string) => {
   revalidatePath(usersUrl);
 };
 
-export const createUser = async (
+type CreateUserInput = {
+  name: string;
+  email: string;
+};
+
+export const createUser = async (input: CreateUserInput) => {
+  return await fetch(usersUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+};
+
+export const createUserFormAction = async (
   _: any,
   formData: FormData
 ): Promise<FormState<User>> => {
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
 
-  const response = await fetch(usersUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, email }),
-  });
+  const response = await createUser({ name, email });
 
   if (!response.ok) {
     return {
       status: "error",
       message: "Usuário criado com sucesso",
-      error: response.json(),
     } as const;
   }
 
@@ -75,7 +83,6 @@ export const updateUser = async (
     return {
       status: "error",
       message: "Error ao atualizar usuário",
-      error: response.json(),
     } as const;
   }
 

@@ -1,4 +1,4 @@
-type FormState<Data, Error = any> =
+type FormState<Data> =
   | {
       status: "initial";
     }
@@ -10,5 +10,4 @@ type FormState<Data, Error = any> =
   | {
       status: "error";
       message: string;
-      error: Error;
     };
